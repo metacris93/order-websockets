@@ -19,7 +19,11 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-
+Route::middleware(['auth', 'web'])->group(function ()
+{
+    Route::resource('orders', 'OrderController');
+    Route::post('orders/ship', 'OrderController@ship')->name('orders.ship');
+});
 Route::middleware(['web', 'auth'])->group(function () {
     Route::get('/home', 'HomeController@index')->name('home');
 });

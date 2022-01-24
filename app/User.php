@@ -35,5 +35,14 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'is_admin' => 'boolean',
     ];
+    public function order()
+    {
+        return $this->hasOne('App\Order', 'buyer_id', 'id');
+    }
+    public function food()
+    {
+        return $this->hasOne('App\Food', 'admin_id', 'id');
+    }
 }

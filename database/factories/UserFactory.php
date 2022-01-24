@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
+use Illuminate\Support\Facades\Hash;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,13 +14,16 @@ use Faker\Generator as Faker;
 | model instances for testing / seeding your application's database.
 |
 */
-
 $factory->define(App\User::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
+        'is_admin' => false,
         'email_verified_at' => now(),
-        'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
+        'password' => Hash::make('12345'),//'$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
         'remember_token' => Str::random(10),
     ];
 });
+$factory->state(App\User::class, 'admin', [
+    'is_admin' => true,
+]);
