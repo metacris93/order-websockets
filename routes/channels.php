@@ -14,3 +14,8 @@
 Broadcast::channel('App.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
+Broadcast::channel('private-message.{id}', function ($user, $id) {
+    info(json_encode($user));
+    info($id);
+    return (int) $user->id === (int) $id;
+});
