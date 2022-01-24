@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\User;
+use App\Order;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -11,21 +11,25 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class PrivateMessage implements ShouldBroadcast
+class OrderUpdated implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $user;
+    /**
+     * The name of the queue on which to place the event.
+     *
+     * @var App\Order
+     */
+    public $order;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct(Order $order)
     {
-        $this->user = $user;
+        $this->order = $order;
     }
-
     /**
      * Get the channels the event should broadcast on.
      *
@@ -33,10 +37,10 @@ class PrivateMessage implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('private.message.'.$this->user->id);
+        return new PrivateChannel('order.update.buyer.'.$this->order->buyer_id);
     }
     public function broadcastAs()
     {
-        return 'private.message';
+        return 'order.updated';
     }
 }

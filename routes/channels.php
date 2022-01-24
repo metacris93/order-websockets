@@ -20,3 +20,13 @@ Broadcast::channel('private.message.{id}', function ($user, $id) {
 Broadcast::channel('test.channel.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
+
+Broadcast::channel('order.update.buyer.{id}', function ($user, $id) {
+    return (int) $user->id === (int) $id;
+});
+Broadcast::channel('order.shipment.{id}', function ($user, $id) {
+    return (int) $user->id === (int) $id;
+});
+Broadcast::channel('order.broadcast.{id}', function ($user, $id) {
+    return (int) $user->id === (int) $id;
+});

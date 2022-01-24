@@ -57,7 +57,7 @@
     document.addEventListener('DOMContentLoaded', function()
     {
         Echo.private('order.shipment.{{auth()->user()->id}}')
-            .listen('OrderShipment', (e) => {
+            .listen('.order.shipment', (e) => {
                 console.log(e);
             });
 
@@ -65,6 +65,11 @@
             .listen('.order.updated', (e) => {
                 console.log(e);
             });
+
+        Echo.private('order.broadcast.{{auth()->user()->id}}')
+        .notification((notification) => {
+            console.log(notification);
+        });
     })
   </script>
 @endsection

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 
 class OrderController extends Controller
 {
@@ -95,7 +96,6 @@ class OrderController extends Controller
         //     ->onQueue('order-shipped');
         //event(new OrderUpdated($order));
         //event(new OrderShipment($order->food));
-
         return redirect()->route('orders.index');
     }
 }

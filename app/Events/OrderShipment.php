@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\User;
+use App\Food;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -11,19 +11,19 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class PrivateMessage implements ShouldBroadcast
+class OrderShipment implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $user;
+    public $food;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct(Food $food)
     {
-        $this->user = $user;
+        $this->food = $food;
     }
 
     /**
@@ -33,10 +33,10 @@ class PrivateMessage implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('private.message.'.$this->user->id);
+        return new PrivateChannel('order.shipment.'.$this->food->admin_id);
     }
     public function broadcastAs()
     {
-        return 'private.message';
+        return 'order.shipment';
     }
 }
