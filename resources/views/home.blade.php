@@ -25,8 +25,12 @@
 <script>
     document.addEventListener('DOMContentLoaded', function()
     {
-        Echo.private('private-message.{{auth()->user()->id}}')
+        Echo.private('private.message.{{auth()->user()->id}}')
         .listen('.private.message', (e) => {
+            console.log(e);
+        });
+        Echo.private('test.channel.{{auth()->user()->id}}')
+        .listen('.test.channel', (e) => {
             console.log(e);
         });
     });
