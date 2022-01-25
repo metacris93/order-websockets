@@ -58,3 +58,9 @@ if (token) {
      disableStats: true,
      forceTLS: false
  });
+
+ /**
+  * Import SweetAlert
+ */
+//import Swal from 'sweetalert2'
+window.Swal = require('sweetalert2');

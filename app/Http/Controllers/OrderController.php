@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Notifications\OrderShipmentNotification;
 use App\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
@@ -16,6 +17,7 @@ class OrderController extends Controller
     public function index()
     {
         $orders = Order::all();
+        //request()->session()->flash('success','Saved succesfully!');
         return view('orders.index', compact('orders'));
     }
 
@@ -96,6 +98,13 @@ class OrderController extends Controller
         //     ->onQueue('order-shipped');
         //event(new OrderUpdated($order));
         //event(new OrderShipment($order->food));
+
+        if (is_null($order->food))
+        {
+            $request->session()->flash('error','No existe el plato para dicha orden');
+            return view('orders.index', compact('orders'));
+        }
+        $order->food->notify((new OrderShipmentNotification())->onQueue('broadcasts'));
         return redirect()->route('orders.index');
     }
 }

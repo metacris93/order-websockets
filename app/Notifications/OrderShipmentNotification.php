@@ -13,6 +13,12 @@ class OrderShipmentNotification extends Notification implements ShouldQueue
     use Queueable;
 
     /**
+     * The name of the queue on which to place the event.
+     *
+     * @var string
+     */
+    public $broadcastQueue = 'broadcasts';
+    /**
      * Create a new notification instance.
      *
      * @return void
@@ -49,9 +55,11 @@ class OrderShipmentNotification extends Notification implements ShouldQueue
     }
     public function toBroadcast($notifiable)
     {
-        return (new BroadcastMessage([
+        $data = [
             'foo' => 'bar'
-        ]))->onQueue('broadcast');
+        ];
+        return (new BroadcastMessage($data))
+            ->onQueue('broadcasts');
     }
     /**
      * Get the array representation of the notification.

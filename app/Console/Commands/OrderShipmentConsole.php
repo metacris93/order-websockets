@@ -2,9 +2,11 @@
 
 namespace App\Console\Commands;
 
-use App\Events\OrderShipment;
 use App\Food;
+use App\Jobs\ProcessOrderShipped;
+use App\Mail\OrderShipped;
 use App\Notifications\OrderShipmentNotification;
+use App\Order;
 use Illuminate\Console\Command;
 
 class OrderShipmentConsole extends Command
@@ -41,13 +43,20 @@ class OrderShipmentConsole extends Command
     public function handle()
     {
         $food = Food::first();
-        $this->info(json_encode($food));
+        //$this->info(json_encode($food));
         if (is_null($food))
         {
             $this->error("No hay alimentos preparados");
             return;
         }
         //event(new OrderShipment($food));
-        $food->notify(new OrderShipmentNotification());
+        //$when = now()->addSeconds(10);
+        //$food->notify((new OrderShipmentNotification())->delay($when));
+
+        // $order = Order::first();
+        // ProcessOrderShipped::dispatch(new OrderShipped($order))
+        //     ->onQueue('order-shipped');
+
+        $food->notify((new OrderShipmentNotification())->onQueue('broadcasts'));
     }
 }

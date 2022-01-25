@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Mail\OrderShipped;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;

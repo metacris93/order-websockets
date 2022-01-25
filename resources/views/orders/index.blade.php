@@ -16,33 +16,37 @@
                     <h5 class="card-title">Orders</h5>
                     <table class="table table-bordered">
                         <thead>
-                          <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Address</th>
-                            <th scope="col">Actions</th>
-                          </tr>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Address</th>
+                                <th scope="col">Actions</th>
+                            </tr>
                         </thead>
                         <tbody>
                             @foreach ($orders as $order)
-                                <tr>
-                                    <th scope="row">{{$order->id}}</th>
-                                    <td>{{$order->address}}</td>
-                                    @if (auth()->user()->is_admin)
-                                        <td>
-                                            <a href="{{route('orders.edit', $order)}}" data-toggle="tooltip"><i class="far fa-edit"></i></a>
-                                            <a href="{{route('orders.destroy', $order->id)}}" data-toggle="tooltip"><i class="fas fa-trash"></i></a>
-                                        </td>
-                                    @else
-                                        <td>
-                                            <a href="{{route('orders.ship')}}" data-toggle="tooltip"
-                                                onclick="event.preventDefault();document.getElementById('order-ship').submit();"><i class="fas fa-shopping-cart"></i></a>
-                                            <form id="order-ship" action="{{route('orders.ship')}}" method="POST" style="display: none;">
-                                                @csrf
-                                                <input type="hidden" name="order" value="{{ $order->id }}">
-                                            </form>
-                                        </td>
-                                    @endif
-                                </tr>
+                            <tr>
+                                <th scope="row">{{$order->id}}</th>
+                                <td>{{$order->address}}</td>
+                                @if (auth()->user()->is_admin)
+                                <td>
+                                    <a href="{{route('orders.edit', $order)}}" data-toggle="tooltip"><i
+                                            class="far fa-edit"></i></a>
+                                    <a href="{{route('orders.destroy', $order->id)}}" data-toggle="tooltip"><i
+                                            class="fas fa-trash"></i></a>
+                                </td>
+                                @else
+                                <td>
+                                    <a href="{{route('orders.ship')}}" data-toggle="tooltip"
+                                        onclick="event.preventDefault();document.getElementById('order-ship').submit();"><i
+                                            class="fas fa-shopping-cart"></i></a>
+                                    <form id="order-ship" action="{{route('orders.ship')}}" method="POST"
+                                        style="display: none;">
+                                        @csrf
+                                        <input type="hidden" name="order" value="{{ $order->id }}">
+                                    </form>
+                                </td>
+                                @endif
+                            </tr>
                             @endforeach
                         </tbody>
                     </table>
@@ -53,7 +57,7 @@
 </div>
 @endsection
 @section('script')
-  <script>
+<script>
     document.addEventListener('DOMContentLoaded', function()
     {
         Echo.private('order.shipment.{{auth()->user()->id}}')
@@ -67,34 +71,45 @@
             });
 
         Echo.private('order.broadcast.{{auth()->user()->id}}')
-        .notification((notification) => {
-            console.log(notification);
-        });
+            .notification((notification) => {
+                Swal.fire({
+                    title: '<strong>Llegó un pedido</strong>',
+                    icon: 'info',
+                    html:
+                        'Puedes editar la orden haciendo click en el siguiente enlace, ' +
+                        '<a href="{{route('orders.edit', $order)}}">Editar orden</a> ',
+                    showCloseButton: true,
+                    showCancelButton: false,
+                    focusConfirm: false,
+                    allowOutsideClick: false,
+                })
+                console.log(notification);
+            });
     })
-  </script>
+</script>
 @endsection
 {{-- @admin
-    @section('script')
-    <script>
-        document.addEventListener('DOMContentLoaded', function()
+@section('script')
+<script>
+    document.addEventListener('DOMContentLoaded', function()
         {
             Echo.private('order.shipment.{{auth()->user()->id}}')
             .listen('OrderShipment', (e) => {
                 console.log(e);
             });
         })
-    </script>
-    @endsection
+</script>
+@endsection
 @else
-    @section('script')
-    <script>
-        document.addEventListener('DOMContentLoaded', function()
+@section('script')
+<script>
+    document.addEventListener('DOMContentLoaded', function()
         {
             Echo.private('order.update.buyer.{{auth()->user()->id}}')
             .listen('.order.updated', (e) => {
                 console.log(e);
             });
         });
-    </script>
-    @endsection
+</script>
+@endsection
 @endadmin --}}
