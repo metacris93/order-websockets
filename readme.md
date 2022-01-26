@@ -18,3 +18,5 @@ In BroadcastManager.php line 211:
                                    
 Class 'Pusher\Pusher' not found
 Realizar composer update
+
+* * * * * cd /path-to-your-project && /php-path artisan schedule:run >> /dev/null 2>&1
